@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+<!--<div class="container mt-3 mb-3">-->
+<!--    <div class="d-flex justify-content-center">-->
+<!--        <div class="col-5 card p-4">-->
+<!--            <div class="card-header">-->
+<!--                <div class="text-center">-->
+<!--                    <b>{{title}}</b>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <form action="" method="post" enctype="multipart/form-data">-->
+<!--                {% csrf_token %}-->
+
+<!--                {{ form.as_p }}-->
+
+
+<!--                <button type="submit" class="d-flex justify-content-center btn btn-primary">-->
+<!--                    Register-->
+<!--                </button>-->
+<!--                <small class="d-flex justify-content-center">-->
+<!--                    Already have an account? <a href='{% url "login_page" %}'>Sign In</a>-->
+<!--                </small>-->
+<!--                <div class="text-center mt-4">-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<section class="form-container">
+    <form action="" method="post">
+        <div class="form">
+            {% csrf_token %}
+            <h3 class="fadeRedText heading">Edit your profile</h3>
+            <input type="text" name="username" maxlength="20" class="box" placeholder="Your username" value="{{ user.username }}">
+            <ul class="validationDeclaration">
+                <li>Minimum 5 characters, must start with a letter</li>
+                <li>Only letters and numbers can be used</li>
+            </ul>
+            <input type="text" name="name" maxlength="20" class="box" placeholder="Your name" value="{{ user_profile.name }}">
+            <ul class="validationDeclaration">
+            </ul>
+            <input type="email" name="email" maxlength="50" class="box" id="regEmail" placeholder="Email" value="{{ user.email }}"/>
+            <ul class="validationDeclaration">
+                <li>Must have one and only one @</li>
+                <li>Allowed characters: letters (a-z), numbers, underscores, periods, and dashes.</li>
+                <li>An underscore, period, or dash must be followed by one or more letter or number.</li>
+                <li>The last portion of the domain must be at least two characters, for example: .com, .org, .cc</li>
+            </ul>
+            <input type="text" name="phone_number" maxlength="20" class="box" placeholder="Your phone number"
+                   value="{{ user_profile.phone_number }}">
+            <ul class="validationDeclaration">
+                <li>Must be started from "+" character</li>
+                <li>Example: +xxxxxxxxxxx</li>
+            </ul>
+            <input type="text" name="location" maxlength="20" class="box" placeholder="Your address"
+                   value="{{ user_profile.location }}">
+            <ul class="validationDeclaration">
+                <li>! Please, indicate precise data about your location</li>
+                <li>! You may have problems during deliveries if you typed incorrect data</li>
+            </ul>
+            <input type="submit" value="apply changes" class="fadeRedBg btn" name="submit" id="saveButton"
+                   onclick="save()"/>
+        </div>
+    </form>
+</section>
+
+{% endblock main %}

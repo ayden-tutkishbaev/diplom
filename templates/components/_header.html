@@ -1,0 +1,56 @@
+{% load static %}
+<section class="flex align">
+        <a href="{% url 'main_page' %}" class="logo align">
+            <img src="{{ logo.image.url }}" alt="logo"/>
+        </a>
+
+        <nav class="navbar">
+            <a href="{% url 'main_page' %}">Home</a>
+            {% for category in categories %}
+            <a href="{% url 'category_page' category.id %}">{{ category.title }}</a>
+            {% endfor %}
+            <a href="{% url 'about_page' %}">About</a>
+        </nav>
+
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            {% if user.is_authenticated %}
+            <a href="{% url 'search_page' %}"><i class="fas fa-search"></i></a>
+            <div id="theme-btn" class="fa-solid fa-circle-half-stroke" onclick="themeSwitch()"></div>
+            <div id="user-btn" class="fas fa-user"></div>
+            <a href="{% url 'wishlist_page' %}">
+                <i class="fas fa-heart"></i>
+            </a>
+            <a href="{% url 'cart_page' %}">
+                <i class="fas fa-shopping-cart"></i>
+            </a>
+            {% else %}
+            <a href="{% url 'search_page' %}"><i class="fas fa-search"></i></a>
+            <div id="theme-btn" class="fa-solid fa-circle-half-stroke" onclick="themeSwitch()"></div>
+            <div id="user-btn" class="fas fa-user"></div>
+            {% endif %}
+        </div>
+
+        <div class="profile">
+            {% if user.is_authenticated %}
+            <div class="flex-btn icons">
+                <a href="{% url 'wishlist_page' %}" id="diss-btn">
+                    <i class="fas fa-heart"></i>
+                </a>
+
+                <a href="{% url 'cart_page' %}" id="diss-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+            </div>
+            <a href="{% url 'your_profile' user.id %}" class="fadeRedBg btn">My profile</a>
+            <a href="{% url 'edit_profile' user.pk %}" class="fadeRedBg btn">Edit profile</a>
+            <a href="{% url 'orders_page' user.id %}" class="fadeRedBg btn">orders</a>
+            <a href="{% url 'logout' %}" class="fadeRedBg btn">logout</a>
+            {% else %}
+            <div class="flex-btn">
+                <a href="{% url 'register_page' %}" class="fadeRedBg option-btn">register</a>
+                <a href="{% url 'login_page' %}" class="fadeRedBg option-btn">login</a>
+            </div>
+            {% endif %}
+        </div>
+    </section>

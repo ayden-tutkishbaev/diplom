@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+
+<section class="search-form">
+    <form action="{% url 'search_results_page' %}" method="get" role="search">
+        <input type="search" name="search" placeholder="Search..." maxlength="100" class="navSearch">
+        <button type="submit" class="fas fa-search" name="search_btn"></button>
+    </form>
+</section>
+
+<section class="products" style="min-height: 100vh">
+    <div class="box-container">
+        {% if products %}
+
+        {% for product in products %}
+
+        <div class="box">
+            {% if product.id in favorites %}
+            <a href="{% url 'remove_from_favorites' product.id %}" class="fas fa-heart"></a>
+            {% else %}
+            <a href="{% url 'add_to_favorites' product.id %}" class="fas fa-heart"></a>
+            {% endif %}
+            {% if product.main_pic %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{{ product.main_pic.url }}" alt=""/>
+            </a>
+            {% else %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{% static 'assets/no_product.png' %}" alt=""/>
+            </a>
+            {% endif %}
+            <a href="{% url 'product_page' product.id %}">
+                <h6 class="name">{{ product.title }}</h6>
+            </a>
+            <a href="{% url 'category_page' product.category.id %}">
+                <p class="type">{{ product.category }}</p>
+            </a>
+            <div class="flex">
+                <div class="price">
+                    {% if product.discount %}
+                    <p class="sale">${{ product.price }}</p>
+                    <span>${{ product.discount }}</span>
+                    {% else %}
+                    <span>${{ product.price }}</span>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% if product.quantity > 0 %}
+            <a href="{% url 'to_cart' product.pk 'add' %}" class="fadeRedBg btn">Add to cart</a>
+            {% else %}
+            <a href="" class="fadeRedBg btn">Out of stock</a>
+            {% endif %}
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+        <p>No relevant matches found.</p>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock main %}

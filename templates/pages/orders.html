@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+<section class="products ">
+    <h1 class="fadeRedText heading">MY ORDERS</h1>
+
+    {% for order in orders %}
+
+    <div class="box-container ">
+
+        <div class="box">
+            <p href="" class="fadeRedBg btn">{{ order.status }}</p>
+
+            <h6 class="name">{{ order.created_at }}</h6>
+
+<!--            <p class="type"> * RTX </p>
+            <p class="type"> * MONITOR </p>
+                        <p class="type"> * RTX </p>
+            <p class="type"> * MONITOR </p>
+                        <p class="type"> * RTX </p>
+            <p class="type"> * MONITOR </p>
+                        <p class="type"> * RTX </p>
+            <p class="type"> * MONITOR </p>-->
+            <div class="flex">
+                <div class="price">
+                    <p class="type">{{ order.get_pay_method }}</p>
+                    <span> $ {{ order.total_price }}</span>
+                </div>
+
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</section>
+
+{% endblock main %}

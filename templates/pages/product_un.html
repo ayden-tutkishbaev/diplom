@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{{ title }}</title>
+
+    <!-- shortcut icon link -->
+    <link rel="shortcut icon" href="{% static 'assets/media/Logos/Logo_2.svg' %}"/>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="{% static 'css/style.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/productcss.css'%}"/>
+
+    <!-- custom js file link -->
+    <script src="{% static 'js/scriptslide.js'%}" defer></script>
+    <script src="{% static 'js/script.js'%}" defer></script>
+
+</head>
+
+<body>
+<header class="header">
+    <section class="flex align">
+        <a href="{% url 'main_page' %}" class="logo align">
+            <img src="{% static 'assets/media/Logos/Logo_1.svg'%}" alt="logo"/>
+        </a>
+
+        <nav class="navbar">
+            <a href="{% url 'main_page' %}">Home</a>
+            {% for category in categories %}
+            <a href="{% url 'category_page' category.id %}">{{ category.title }}</a>
+            {% endfor %}
+            <a href="{% url 'about_page' %}">About</a>
+        </nav>
+
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <a href="{% url 'search_page' %}"><i class="fas fa-search"></i></a>
+            <div id="theme-btn" class="fa-solid fa-circle-half-stroke" onclick="themeSwitch()"></div>
+            <div id="user-btn" class="fas fa-user"></div>
+            <a href="{% url 'wishlist_page' %}">
+                <i class="fas fa-heart"></i>
+            </a>
+
+            <a href="{% url 'cart_page' %}">
+                <i class="fas fa-shopping-cart"></i>
+            </a>
+        </div>
+
+        <div class="profile">
+            <div class="flex-btn icons">
+                <a href="{% url 'wishlist_page' %}" id="diss-btn">
+                    <i class="fas fa-heart"></i>
+                </a>
+
+                <a href="{% url 'cart_page' %}" id="diss-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+            </div>
+            <a href="#" class="fadeRedBg btn">update profile</a>
+            <a href="#" class="fadeRedBg btn">orders</a>
+            <div class="flex-btn">
+                <!--                <a href="register.html" class="fadeRedBg option-btn">register</a>-->
+                <!--                <a href="login.html" class="fadeRedBg option-btn">login</a>-->
+
+                <!--                WHEN USER IS LOGGED OUT-->
+
+            </div>
+            <a class="fadeRedBg btn">logout</a>
+        </div>
+    </section>
+</header>
+
+<div class="card-wrapper">
+    <div class="card">
+        <!-- card left -->
+        <div class="product-imgs">
+            <div class="img-display">
+                <div class="img-showcase">
+                    {% if product.main_pic %}
+                    <img src="{{ product.main_pic.url }}" alt="shoe image">
+                    {% if product.pic_2 %}
+                    <img src="{{ product.pic_2.url }}" alt="shoe image">
+                    {% endif %}
+                    {% if product.pic_3 %}
+                    <img src="{{ product.pic_3.url }}" alt="shoe image">
+                    {% endif %}
+                    {% if product.pic_4 %}
+                    <img src="{{ product.pic_4.url }}" alt="shoe image">
+                    {% endif %}
+                    {% else %}
+                    <img src="{% static 'assets/no_product.png' %}" alt="shoe image">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="img-select">
+                {% if images_num > 1 and product.main_pic.url %}
+                <div class="img-item">
+                    <a href="#" data-id="1">
+                        <img src="{{ product.main_pic.url }}" alt="shoe image">
+                    </a>
+                </div>
+                {% if product.pic_2 %}
+                <div class="img-item">
+                    <a href="#" data-id="2">
+                        <img src="{{ product.pic_2.url }}" alt="shoe image">
+                    </a>
+                </div>
+                {% endif %}
+                {% if product.pic_3 %}
+                <div class="img-item">
+                    <a href="#" data-id="3">
+                        <img src="{{ product.pic_3.url }}" alt="shoe image">
+                    </a>
+                </div>
+                {% endif %}
+                {% if product.pic_4 %}
+                <div class="img-item">
+                    <a href="#" data-id="4">
+                        <img src="{{ product.pic_4.url }}" alt="shoe image">
+                    </a>
+                </div>
+                {% endif %}
+                {% else %}
+                <div class="img-item">
+                    <a href="#" data-id="1">
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- card right -->
+        <div class="product-content">
+            <h2 class="product-title">{{ product.title }}</h2>
+            <h2>{{ product.category }}</h2>
+            <div class="container">
+                <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>4.7(21)</span>
+                </div>
+            </div>
+
+            <div class="product-price">
+                {% if product.discount %}
+                <p class="last-price">Old Price: <span>${{product.price}}</span></p>
+                <p class="new-price">New Price: <span>${{product.discount}}</span></p>
+                {% else %}
+                <p class="price">Price: <span>${{product.price}}</span></p>
+                {% endif %}
+            </div>
+
+            <div class="product-detail">
+                <h2>about this item: </h2>
+                <p>{{ product.description }}</p>
+                <ul>
+                    <li>Available:
+                        {% if product.in_stock == True %}
+                        <span>in stock</span>
+                        {% else %}
+                        <span>out of stock</span>
+                        {% endif %}
+                    </li>
+                    <li>Category: <span>{{ product.category }}</span></li>
+                    <li>How many in stock: <span>{{ product.quantity }}</span></li>
+                    <li>Shipping Fee:
+                        {% if product.shipping_fee == 0 %}
+                        <span>Free</span>
+                        {% else %}
+                        <span>$ {{ product.shipping_fee }}</span>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="purchase-info">
+                <input type="number" min="0" value="1">
+                <button type="button" class="btn">
+                    Add to Cart <i class="fas fa-shopping-cart"></i>
+                </button>
+                {% if product.id in favorites %}
+                <a href="{% url 'remove_from_favorites' product.id %}" class="btn">Remove</a>
+                {% else %}
+                <a href="{% url 'add_to_favorites' product.id %}" class="btn">Favorites</a>
+                {% endif %}
+                <!--                <a href="{% url 'remove_from_favorites' product.id %}" class="btn">Remove from favs</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="comments-container">
+    <h1>Comments</h1>
+
+    <!--    {% if user.is_authenticated %}-->
+    <!--    <div class="card">-->
+    <!--        <form action="" method="post">-->
+    <!--            {% csrf_token %}-->
+    <!--            {{ form.as_p }}-->
+    <!--            <button type="submit" class="btn">-->
+    <!--                Add comment-->
+    <!--            </button>-->
+    <!--        </form>-->
+    <!--    </div>-->
+    <!--    {% endif %}-->
+
+    <ul id="comments-list" class="comments-list">
+        {% for comment in comments %}
+        <li>
+            <div class="comment-main-level">
+
+                <div class="comment-avatar"><img src="/assets/media/commentariy/a43f3fe1f02cf9b61907accdefa82c6c.jpg"
+                                                 alt=""></div>
+                <div class="comment-box">
+                    <div class="comment-head">
+                        <h6 class="comment-name by-author"><a href="#">{{ comment.author }}</a></h6>
+                        <span>20 minutes ago</span>
+
+                    </div>
+                    <div class="comment-content">
+                        {{ comment.text }}
+                    </div>
+                </div>
+            </div>
+
+
+        </li>
+
+        {% endfor %}
+    </ul>
+</div>
+
+
+<footer class="footer">
+    <section class="grid">
+        <div class="box">
+            <h3>Quick links</h3>
+            <a href="{% url 'main_page' %}"><i class="fas fa-angle-right"></i>Home</a>
+            {% for category in categories %}
+            <a href="{% url 'category_page' category.id %}"><i class="fas fa-angle-right"></i>{{ category.title }}</a>
+            {% endfor %}
+            <a href="{% url 'about_page' %}"><i class="fas fa-angle-right"></i>About</a>
+        </div>
+
+        <div class="box">
+            <h3>Account Information</h3>
+            <a href="{% url 'login_page' %}"><i class="fas fa-angle-right"></i> Login</a>
+            <a href="{% url 'register_page' %}"><i class="fas fa-angle-right"></i> Register</a>
+            <a href="{% url 'orders_page' %}"><i class="fas fa-angle-right"></i> Orders</a>
+            <a href="{% url 'cart_page' %}"><i class="fas fa-angle-right"></i> Cart</a>
+            <a href="{% url 'wishlist_page' %}"><i class="fas fa-angle-right"></i> Wishlist</a>
+        </div>
+
+        <div class="box">
+            <h3>Working hours:</h3>
+            {% for day in working_hours %}
+            <a href="">{{ day.week_day }}: {{ day.start }} - {{ day.finish }}</a>
+            {% endfor %}
+        </div>
+        <div class="box">
+            <h3>Contact us!</h3>
+            <a href="">{{ standard_settings.main_phone_number }}</a>
+            <a href="">{{ standard_settings.main_email }}</a>
+        </div>
+    </section>
+
+    <div class="credit">{{ standard_settings.all_rights_reserved }}</div>
+</footer>
+
+</body>
+</html>

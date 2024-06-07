@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+<section class="products">
+    <h1 class="fadeRedText heading">{{ category.title }}</h1>
+
+    <div class="box-container">
+
+        {% for product in products %}
+        <div class="box">
+            {% if product.id in favorites %}
+            <a href="{% url 'remove_from_favorites' product.id %}" class="fas fa-heart"></a>
+            {% else %}
+            <a href="{% url 'add_to_favorites' product.id %}" class="fas fa-heart"></a>
+            {% endif %}
+            {% if product.main_pic %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{{ product.main_pic.url }}" alt=""/>
+            </a>
+            {% else %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{% static 'assets/no_product.png' %}" alt=""/>
+            </a>
+            {% endif %}
+            <a href="{% url 'product_page' product.id %}">
+                <h6 class="name">{{ product.title }}</h6>
+            </a>
+            <a href="{% url 'category_page' product.category.id %}">
+                <p class="type">{{ product.category }}</p>
+            </a>
+            <div class="flex">
+                <div class="price">
+                    {% if product.discount %}
+                    <p class="sale">${{ product.price }}</p>
+                    <span>${{ product.discount }}</span>
+                    {% else %}
+                    <span>${{ product.price }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% if product.quantity > 0 %}
+            <a href="{% url 'to_cart' product.pk 'add' %}" class="fadeRedBg btn">Add to cart</a>
+            {% else %}
+            <a href="" class="fadeRedBg btn">Out of stock</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/Samsung_Odyssey_G5.png" alt=""/>-->
+        <!--            <div class="name">SAMSUNG Odyssey G5</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$399.99</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/MSI_Optix_G321CUV.png " alt=""/>-->
+        <!--            <div class="name">MSI Optix G321CUV 32"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$299.99</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/MSI_Optix_AG321CQR.png" alt=""/>-->
+        <!--            <div class="name">MSI Optix AG321CQR 32"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$295.00</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/Acer_Nitro_QG271.png" alt=""/>-->
+        <!--            <div class="name">Acer Nitro QG271</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$149.99</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/ASUS_TUF_Gaming_VG27AQ1A.png" alt=""/>-->
+        <!--            <div class="name">ASUS TUF Gaming VG27AQ1A 27"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$279.00</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/Samsung_Odyssey_Neo_G9.png" alt=""/>-->
+        <!--            <div class="name">Samsung Odyssey Neo G9 49"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$2,299.99</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/LG_49WL95C.png" alt=""/>-->
+        <!--            <div class="name">LG 49WL95C-WY 49"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$899.99</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/MSI_Optix_MPG341QR.png" alt=""/>-->
+        <!--            <div class="name">MSI Optix MPG341QR 34"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$519.99</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/LG_UltraGear.png " alt=""/>-->
+        <!--            <div class="name">LG UltraGear 38GN95B-B 37.5"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$999.99</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/ASUS_PA348CGV.png" alt=""/>-->
+        <!--            <div class="name">ASUS PA348CGV 34"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$729.99</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/MSI_Optix_MAG162V.png" alt=""/>-->
+        <!--            <div class="name">MSI Optix MAG162V 15.6"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$145.00</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/ASUS_ROG_Strix_XG17AHPE.png" alt=""/>-->
+        <!--            <div class="name">ASUS ROG Strix XG17AHPE 17.3"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$469.00</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/ASUS_ZenScreen.png" alt=""/>-->
+        <!--            <div class="name">ASUS ZenScreen MB16AC 15.6"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$245.00</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/Lenovo_ThinkVision_M14.png" alt=""/>-->
+        <!--            <div class="name">Lenovo ThinkVision M14 14"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$256.00</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+        <!--        <div class="box">-->
+        <!--            <button class="fas fa-heart" type="submit" name="add_to_wishlist" onclick="wishlist(event)"></button>-->
+        <!--            <img src="./assets/media/Monitors/GIGABYTE_M34WQ_34.png" alt=""/>-->
+        <!--            <div class="name">GIGABYTE M34WQ 34"</div>-->
+        <!--            <div class="type">Monitor</div>-->
+        <!--            <div class="flex">-->
+        <!--                <div class="price">-->
+        <!--                    <span>$459.99</span>-->
+        <!--                </div>-->
+        <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+        <!--            </div>-->
+        <!--            <input type="submit" value="add to cart" class="fadeRedBg btn" onclick="cart(event)" name="add_to_cart"/>-->
+        <!--        </div>-->
+
+    </div>
+</section>
+
+{% endblock main %}

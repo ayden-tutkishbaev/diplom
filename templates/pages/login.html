@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+<section class="form-container" style="margin-block: 2rem">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form">
+            <h3 class="fadeRedText heading">Login now</h3>
+            <input type="text" name="username" maxlength="50" class="box"
+                   placeholder="Username">
+            <input type="password" name="password" required maxlength="20" class="box passInput" id="logPassword"
+                   placeholder="Password"/>
+            <div class="showPasswordCont">
+                <input type="checkbox" name="show password" id="showPassword">
+                <label for="showPassword">Show Password</label>
+            </div>
+            <input type="submit" value="login now" class="fadeRedBg btn" name="submit" id="logButton"
+                   onclick="login()"/>
+            <p>Don't have an account?</p>
+            <a href="{% url 'register_page' %}" class="fadeRedBg option-btn">register now</a>
+        </div>
+    </form>
+</section>
+
+{% endblock main %}

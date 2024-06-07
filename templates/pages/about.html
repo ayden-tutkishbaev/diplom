@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+<div class="banner">
+    {% if promo.image %}
+    <img src="{{ promo.image.url }}" alt="banner"/>
+    {% else %}
+    <p>NO PHOTO</p>
+    {% endif %}
+</div>
+
+<!--About Us Text-->
+<div class="aboutDivOuter">
+    <div class="aboutDivInner">
+        <h1 class="heading">Cart fills</h1>
+        <p>Description</p>
+    </div>
+</div>
+
+<section class="contact form-container">
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="form">
+            {% csrf_token %}
+            <h3 class="fadeRedText heading">Get in touch</h3>
+            <!--        <input type="text" name="name" required maxlength="20" class="box" placeholder="Name">-->
+            <ul class="validationDeclaration">
+                <!--            <li>Only letters can be used</li>-->
+            </ul>
+            <!--        <input type="email" name="email" required maxlength="50" class="box" placeholder="Email">-->
+            <!--        <ul class="validationDeclaration">-->
+            <!--            <li>Must have one and only one @</li>-->
+            <!--            <li>Allowed characters: letters (a-z), numbers, underscores, periods, and dashes.</li>-->
+            <!--            <li>An underscore, period, or dash must be followed by one or more letter or number.</li>-->
+            <!--            <li>The last portion of the domain must be at least two characters, for example: .com, .org, .cc</li>-->
+            <!--        </ul>-->
+            <input type="text" name="phone_number" id="phone_number"
+                   onkeypress="if(this.value.length == 15) return false;" class="box" placeholder="Number">
+            <ul class="validationDeclaration">
+                <li>Must be started from "+" character</li>
+                <li>Example: +xxxxxxxxxxx</li>
+            </ul>
+            <textarea name="text" class="box" id="text" cols="30" rows="10" placeholder="Message"></textarea>
+            <button type="submit" class="fadeRedBg btn" onclick="contactUs(event)">Send Message</button>
+        </div>
+    </form>
+</section>
+
+{% endblock main %}

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+<section class="products shopping-cart">
+    <h3 class="fadeRedText heading">Items</h3>
+    <div class="box-container">
+
+        {% for item in products %}
+        <div class="box">
+            {% if item.product.id in favorites %}
+            <a href="{% url 'remove_from_favorites' item.product.id %}" class="fas fa-heart"></a>
+            {% else %}
+            <a href="{% url 'add_to_favorites' item.product.id %}" class="fas fa-heart"></a>
+            {% endif %}
+            {% if item.product.main_pic %}
+            <a href="{% url 'product_page' item.product.id %}">
+                <img src="{{ item.product.main_pic.url }}" alt=""/>
+            </a>
+            {% else %}
+            <a href="{% url 'product_page' item.product.id %}">
+                <img src="{% static 'assets/no_product.png' %}" alt=""/>
+            </a>
+            {% endif %}
+            <a href="{% url 'product_page' item.product.id %}">
+                <h6 class="name">{{ item.product.title }}</h6>
+            </a>
+            <a href="{% url 'category_page' item.product.category.id %}">
+                <p class="type">{{ item.product.category }}</p>
+            </a>
+            <div class="flex">
+                <div class="price">
+                    <span>$ {{ item.get_total_price }}</span>
+                </div>
+                <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+                <p class="qty">{{ item.quantity }}</p>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+    <div class="box-container" id="cartContainer"></div>
+</section>
+
+<section class="checkout-items">
+    <form action="" method="post">
+
+        <div class="form">
+            <div class="cart-total">
+                <a href="{% url 'cart_page' %}" class="btn fadeRedBg">back to cart</a>
+            </div>
+            <h3 class="fadeRedText heading">Place your order</h3>
+
+            <div class="flex">
+                {% csrf_token %}
+                <div class="inputBox">
+                    <span>* Your name:</span>
+                    <input type="text" name="name" class="input" maxlength="20" placeholder="Name"/>
+                    <ul class="validationDeclaration">
+                        <li>Only letters can be used</li>
+                    </ul>
+                </div>
+                <div class="inputBox">
+                    <span>* Your number:</span>
+                    <input type="tel" name="phone_number" class="input" min="0" max="999999999"
+                            placeholder="Number"/>
+                    <ul class="validationDeclaration">
+                        <li>Only numbers can be used</li>
+                    </ul>
+                </div>
+                <div class="inputBox">
+                    <span>* Your email:</span>
+                    <input type="email" name="email" class="input" maxlength="50" placeholder="Email"/>
+                </div>
+                <div class="inputBox">
+                    <span>* Payment method:</span>
+                    <select name="payment_method" class="input">
+                        <option value="credit_card">Credit card</option>
+                    </select>
+                </div>
+                <div class="inputBox">
+                    <span>* Address:</span>
+                    <input type="text" name="address" class="input" maxlength="50" placeholder="Address"/>
+                    <ul class="validationDeclaration">
+                        <li>Only letters, numbers and special characters can be used</li>
+                    </ul>
+                </div>
+                <div class="inputBox">
+                    <span>* City:</span>
+                    <input type="text" name="city" class="input" maxlength="50" placeholder="City"/>
+                    <ul class="validationDeclaration">
+                        <li>Only letters and numbers can be used</li>
+                    </ul>
+                </div>
+                <div class="inputBox">
+                    <span>* Country:</span>
+                    <input type="text" name="country" class="input" maxlength="50" placeholder="Country"/>
+                    <ul class="validationDeclaration">
+                        <li>Only letters and numbers can be used</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cart-total">
+                <p>Grand total: $ {{cart_total_price}}<span id="totalPrice"></span></p>
+                <input type="submit" name="order" class="btn fadeRedBg" value="place order" onclick="placeOrder()"/>
+            </div>
+        </div>
+    </form>
+</section>
+
+{% endblock main %}

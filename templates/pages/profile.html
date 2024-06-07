@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+
+<div class="card">
+
+    <header>
+        <div class="backgr"></div>
+        <img src="{% static 'assets/pfp.jpg' %}" alt="user " class="profile-img">
+    </header>
+
+    <main>
+        <p class="full-name">{{ user.username }}</p>
+        <p>=============</p>
+        {% if user_profile.name %}
+        <p class="desc">* {{ user_profile.name }}</p>
+        {% else %}
+        <p class="desc">* No name</p>
+        {%endif%}
+        {% if user_profile.location %}
+        <p class="desc">* {{ user_profile.location }}</p>
+        {% else %}
+        <p class="desc">Location is not indicated</p>
+        {% endif %}
+        <p class="username">{{ user.email }}</p>
+        <p class="date-registration">With us since {{ user.date_joined.date }}</p>
+    </main>
+
+</div>
+
+<section class="products">
+    <h3 class="fadeRedText heading">{{ user.username }}'s wishlist</h3>
+    <div class="box-container ">
+        {% for favourite in favourites %}
+        <div class="box">
+            <a href="{% url 'remove_from_favorites' favourite.product.id %}" class="fas fa-heart"></a>
+            {% if favourite.product.main_pic %}
+            <a href="{% url 'product_page' favourite.product.id %}">
+                <img src="{{ favourite.product.main_pic.url }}" alt=""/>
+            </a>
+            {% else %}
+            <a href="{% url 'product_page' favourite.product.id %}">
+                <img src="{% static 'assets/no_product.png' %}" alt=""/>
+            </a>
+            {% endif %}
+            <a href="{% url 'product_page' favourite.product.id %}">
+                <h6 class="name">{{ favourite.product.title }}</h6>
+            </a>
+            <a href="{% url 'category_page' favourite.product.category.id %}">
+                <p class="type">{{ favourite.product.category }}</p>
+            </a>
+            <div class="flex">
+                <div class="price">
+                    {% if favourite.product.discount %}
+                    <p class="sale">${{ favourite.product.price }}</p>
+                    <span>${{ favourite.product.discount }}</span>
+                    {% else %}
+                    <span>${{ favourite.product.price }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% if favourite.product.quantity > 0 %}
+            <a href="{% url 'to_cart' favourite.product.pk 'add' %}" class="fadeRedBg btn">Add to cart</a>
+            {% else %}
+            <a href="" class="fadeRedBg btn">Out of stock</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="box-container" id="wishlistContainer"></div>
+</section>
+
+{% endblock main %}

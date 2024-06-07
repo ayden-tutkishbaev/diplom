@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+<body>
+<header class="header">
+    <section class="flex align">
+        <a href="{% url 'main_page' %}" class="logo align">
+            <img src="{% static 'assets/media/Logos/Logo_1.svg'%}" alt="logo"/>
+        </a>
+
+        <nav class="navbar">
+            <a href="{% url 'main_page' %}">Home</a>
+            {% for category in categories %}
+            <a href="{% url 'category_page' category.id %}">{{ category.title }}</a>
+            {% endfor %}
+            <a href="{% url 'about_page' %}">About</a>
+        </nav>
+
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <a href="{% url 'search_page' %}"><i class="fas fa-search"></i></a>
+            <div id="theme-btn" class="fa-solid fa-circle-half-stroke" onclick="themeSwitch()"></div>
+            <div id="user-btn" class="fas fa-user"></div>
+            <a href="{% url 'wishlist_page' %}">
+                <i class="fas fa-heart"></i>
+            </a>
+
+            <a href="{% url 'cart_page' %}">
+                <i class="fas fa-shopping-cart"></i>
+            </a>
+        </div>
+
+        <div class="profile">
+            <div class="flex-btn icons">
+                <a href="{% url 'wishlist_page' %}" id="diss-btn">
+                    <i class="fas fa-heart"></i>
+                </a>
+
+                <a href="{% url 'cart_page' %}" id="diss-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+            </div>
+            <a href="#" class="fadeRedBg btn">update profile</a>
+            <a href="#" class="fadeRedBg btn">orders</a>
+            <div class="flex-btn">
+                <!--                <a href="register.html" class="fadeRedBg option-btn">register</a>-->
+                <!--                <a href="login.html" class="fadeRedBg option-btn">login</a>-->
+
+                <!--                WHEN USER IS LOGGED OUT-->
+
+            </div>
+            <a class="fadeRedBg btn">logout</a>
+        </div>
+    </section>
+</header>
+
+<section class="form-container">
+    <div class="form">
+        <h3 class="fadeRedText">Update now</h3>
+        <input type="text" name="name" maxlength="20" class="box" id="updUsername" placeholder="Username"/>
+        <ul class="validationDeclaration">
+            <li>Minimum 5 characters, must start with a letter</li>
+            <li>Only letters and numbers can be used</li>
+        </ul>
+        <input type="email" name="email" maxlength="50" class="box" id="updEmail" placeholder="Email"/>
+        <ul class="validationDeclaration">
+            <li>Must have one and only one @</li>
+            <li>Allowed characters: letters (a-z), numbers, underscores, periods, and dashes.</li>
+            <li>An underscore, period, or dash must be followed by one or more letter or number.</li>
+            <li>The last portion of the domain must be at least two characters, for example: .com, .org, .cc</li>
+        </ul>
+        <input type="password" name="old_pass" maxlength="20" class="box passInput" id="updOldPass"
+               placeholder="Old Password"/>
+        <ul class="validationDeclaration">
+            <li>Must be the old password to validate the users credentials</li>
+        </ul>
+        <input type="password" name="new_pass" maxlength="20" class="box passInput" id="updNewPass"
+               placeholder="New Password"/>
+        <ul class="validationDeclaration">
+            <li>Minimum of 8 characters</li>
+            <li>Maximum of 20 characters</li>
+            </br>
+            <li>USE AT LEAST 3 of the following classes:</li>
+            <li>Lower case letters</li>
+            <li>Upper case letter(s)</li>
+            <li>Number(s)</li>
+            <li>Special Character(s) (@#$^&*+=)</li>
+        </ul>
+        <input type="password" name="cpass" maxlength="20" class="box passInput" id="updConfNewPass"
+               placeholder="Confirm New password"/>
+        <div class="showPasswordCont">
+            <input type="checkbox" name="show password" id="showPassword">
+            <label for="showPassword">Show Passwords</label>
+        </div>
+        <input type="submit" value="update now" class="fadeRedBg btn" name="submit" onclick="update()"/>
+    </div>
+</section>
+{% endblock main %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+
+<body>
+
+<section class="products shopping-cart">
+    <h3 class="fadeRedText heading">Shopping cart</h3>
+
+    <div class="box-container ">
+
+        {% for item in products %}
+        <div class="box">
+            {% if item.product.id in favorites %}
+            <a href="{% url 'remove_from_favorites' item.product.id %}" class="fas fa-heart"></a>
+            {% else %}
+            <a href="{% url 'add_to_favorites' item.product.id %}" class="fas fa-heart"></a>
+            {% endif %}
+            {% if item.product.main_pic %}
+            <a href="{% url 'product_page' item.product.id %}">
+                <img src="{{ item.product.main_pic.url }}" alt=""/>
+            </a>
+            {% else %}
+            <a href="{% url 'product_page' item.product.id %}">
+                <img src="{% static 'assets/no_product.png' %}" alt=""/>
+            </a>
+            {% endif %}
+            <a href="{% url 'product_page' item.product.id %}">
+                <h6 class="name">{{ item.product.title }}</h6>
+            </a>
+            <a href="{% url 'category_page' item.product.category.id %}">
+                <p class="type">{{ item.product.category }}</p>
+            </a>
+            <div class="flex">
+                <div class="price">
+                    <span>$ {{ item.get_total_price }}</span>
+                </div>
+                <!--                <input type="number" name="qty" class="qty" min="1" max="99" value="1"/>-->
+                <p class="qty">{{ item.quantity }}</p>
+            </div>
+            {% if item.product.quantity > 0 %}
+            <a href="{% url 'to_cart' item.product.pk 'add' %}" class="fadeRedBg btn">+</a>
+            <a href="{% url 'to_cart' item.product.pk 'delete' %}" class="fadeRedBg btn">-</a>
+            {% else %}
+            <a href="" class="fadeRedBg btn">Out of stock</a>
+            <a href="{% url 'to_cart' item.product.pk 'delete' %}" class="fadeRedBg btn">-</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+
+    </div>
+
+    <div class="box-container" id="cartContainer">
+    </div>
+
+    <div class="cart-total">
+        <p>Grand total: $ {{cart_total_price}}<span id="totalPrice"></span></p>
+        {% if products %}
+        <a class="fadeRedBg btn" href="{% url 'checkout_page' %}">proceed to checkout</a>
+        <a href="{% url 'main_page' %}" class="fadeRedBg btn">continue shopping</a>
+        {% else %}
+        <a href="{% url 'main_page' %}" class="fadeRedBg btn">continue shopping</a>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock main %}

@@ -1,0 +1,5 @@
+Django==5.0.4
+django-jazzmin==2.6.1
+pillow==10.3.0
+python-dotenv==1.0.1
+stripe==9.9.0

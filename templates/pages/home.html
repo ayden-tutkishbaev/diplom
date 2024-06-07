@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+
+<div class="featContent" style="margin-block: 2.5%">
+
+
+    {% if bigfeaturedproduct %}
+    {% for item in bigfeaturedproduct %}
+    <div class="bigFeaturedProduct">
+
+        <p style="
+                  font-size: xx-large;
+                  font-weight: bold;
+                  text-align: center;
+                ">
+            Super sale!
+        </p>
+        <div class="bigProduct">
+            <a href="{% url 'product_page' item.product.id %}">
+                <img src="{{ item.product.main_pic.url }}" class="align"/>
+            </a>
+            <div class="align bigFeat">
+                <p style="
+                  font-size: xx-large;
+                  font-weight: bold;
+                  text-align: center;
+                ">
+                    <a href="{% url 'product_page' item.product.id %}">
+                        {{ item.product.title }}
+                    </a>
+                </p>
+                <p style="
+                  font-size: x-large;
+                  font-weight: bold;
+                  text-align: center;
+                  margin-block: 1rem;
+                ">
+                    $ {{ item.product.price }}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="smallerFeaturedProducts">
+
+        {% if smallfeaturedproducts %}
+        {% for item in smallfeaturedproducts %}
+        <div class="smallProduct">
+            <a href="{% url 'product_page' item.product.id %}">
+                <img src="{{ item.product.main_pic.url }}" class="align"/>
+            </a>
+            <div class="align smallFeat">
+                <a href="{% url 'product_page' item.product.id %}">
+                    <p id="smallTitle">{{ item.product.title }}</p>
+                </a>
+                <p id="smallPrice">$ {{ item.product.price }}</p>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<section class="products ">
+    <h1 class="fadeRedText heading">SALES</h1>
+
+    <div class="box-container ">
+
+        {% for product in sales_products %}
+        <div class="box">
+            {% if product.id in favorites %}
+            <a href="{% url 'remove_from_favorites' product.id %}" class="fas fa-heart"></a>
+            {% else %}
+            <a href="{% url 'add_to_favorites' product.id %}" class="fas fa-heart"></a>
+            {% endif %}
+            {% if product.main_pic %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{{ product.main_pic.url }}" alt=""/>
+            </a>
+            {% else %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{% static 'assets/no_product.png' %}" alt=""/>
+            </a>
+            {% endif %}
+            <a href="{% url 'product_page' product.id %}">
+                <h6 class="name">{{ product.title }}</h6>
+            </a>
+            <a href="{% url 'category_page' product.category.id %}">
+                <p class="type">{{ product.category }}</p>
+            </a>
+            <div class="flex">
+                <div class="price">
+                    <p class="sale">${{ product.price }}</p>
+                    <span>${{ product.discount }}</span>
+                </div>
+
+            </div>
+            {% if product.quantity > 0 %}
+            <a href="{% url 'to_cart' product.pk 'add' %}" class="fadeRedBg btn">Add to cart</a>
+            {% else %}
+            <a href="" class="fadeRedBg btn">Out of stock</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+
+    </div>
+</section>
+
+<section class="products">
+    <h1 class="fadeRedText heading">NEWEST RELEASES</h1>
+
+    <div class="box-container">
+
+        {% for product in newest_products %}
+        <div class="box">
+            <a class="fas fa-heart" type="submit" href="{% url 'add_to_favorites' product.id %}"></a>
+            {% if product.main_pic %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{{ product.main_pic.url }}" alt=""/>
+            </a>
+            {% else %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{% static 'assets/no_product.png' %}" alt=""/>
+            </a>
+            {% endif %}
+            <a href="{% url 'product_page' product.id %}">
+                <h6 class="name">{{ product.title }}</h6>
+            </a>
+            <a href="{% url 'category_page' product.category.id %}">
+                <p class="type">{{ product.category }}</p>
+            </a>
+            <div class="flex">
+                <div class="price">
+                    {% if product.discount %}
+                    <p class="sale">${{ product.price }}</p>
+                    <span>${{ product.discount }}</span>
+                    {% else %}
+                    <span>${{ product.price }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% if product.quantity > 0 %}
+            <a href="{% url 'to_cart' product.pk 'add' %}" class="fadeRedBg btn">Add to cart</a>
+            {% else %}
+            <a href="" class="fadeRedBg btn">Out of stock</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+<section class="products">
+    <h1 class="fadeRedText heading">POPULAR</h1>
+
+    <div class="box-container">
+
+        {% for product in popular_products %}
+        <div class="box">
+            {% if product.id in favorites %}
+            <a href="{% url 'remove_from_favorites' product.id %}" class="fas fa-heart"></a>
+            {% else %}
+            <a href="{% url 'add_to_favorites' product.id %}" class="fas fa-heart"></a>
+            {% endif %}
+            {% if product.main_pic %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{{ product.main_pic.url }}" alt=""/>
+            </a>
+            {% else %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{% static 'assets/no_product.png' %}" alt=""/>
+            </a>
+            {% endif %}
+            <a href="{% url 'product_page' product.id %}">
+                <h6 class="name">{{ product.title }}</h6>
+            </a>
+            <a href="{% url 'category_page' product.category.id %}">
+                <p class="type">{{ product.category }}</p>
+            </a>
+            <div class="flex">
+                <div class="price">
+                    {% if product.discount %}
+                    <p class="sale">${{ product.price }}</p>
+                    <span>${{ product.discount }}</span>
+                    {% else %}
+                    <span>${{ product.price }}</span>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% if product.quantity > 0 %}
+            <a href="{% url 'to_cart' product.pk 'add' %}" class="fadeRedBg btn">Add to cart</a>
+            {% else %}
+            <a href="" class="fadeRedBg btn">Out of stock</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+<section class="products">
+    <h1 class="fadeRedText heading">All our products</h1>
+
+    <div class="box-container">
+
+        {% for product in products %}
+        <div class="box">
+            {% if product.id in favorites %}
+            <a href="{% url 'remove_from_favorites' product.id %}" class="fas fa-heart"></a>
+            {% else %}
+            <a href="{% url 'add_to_favorites' product.id %}" class="fas fa-heart"></a>
+            {% endif %}
+            {% if product.main_pic %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{{ product.main_pic.url }}" alt=""/>
+            </a>
+            {% else %}
+            <a href="{% url 'product_page' product.id %}">
+                <img src="{% static 'assets/no_product.png' %}" alt=""/>
+            </a>
+            {% endif %}
+            <a href="{% url 'product_page' product.id %}">
+                <h6 class="name">{{ product.title }}</h6>
+            </a>
+            <a href="{% url 'category_page' product.category.id %}">
+                <p class="type">{{ product.category }}</p>
+            </a>
+            <div class="flex">
+                <div class="price">
+                    {% if product.discount %}
+                    <p class="sale">${{ product.price }}</p>
+                    <span>${{ product.discount }}</span>
+                    {% else %}
+                    <span>${{ product.price }}</span>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% if product.quantity > 0 %}
+            <a href="{% url 'to_cart' product.pk 'add' %}" class="fadeRedBg btn">Add to cart</a>
+            {% else %}
+            <a href="" class="fadeRedBg btn">Out of stock</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+
+{% endblock main %}

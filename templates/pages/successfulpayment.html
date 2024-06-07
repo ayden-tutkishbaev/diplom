@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block main %}
+
+{% load static %}
+
+<div class="cart-total">
+    <form action="{% url 'payment_session' %}" method="post">
+        {% csrf_token %}
+        <p>Total: $ {{cart_total_price}}<span id="totalPrice"></span></p>
+        <input type="submit" name="order" class="btn fadeRedBg" value="PAY" onclick="placeOrder()"/>
+    </form>
+</div>
+
+{% endblock main %}
