@@ -18,4 +18,5 @@ IN TERMINAL:
 7) IN BROWSER: localhost:8000/admin
 8) LOG INTO YOUR ADMIN ACCOUNT
 9) TO RESOLVE EXCEPTION YOU GET: FILL IN stardard settings, promo, logo MODELS
-    ENGOY!!! :)
+
+   ENJOY!!! :)
