@@ -1,3 +1,5 @@
+# DIPLOM PROJECT
+
 Welcome to my project made for diploma!
 
 Steps to launch my project fully:
